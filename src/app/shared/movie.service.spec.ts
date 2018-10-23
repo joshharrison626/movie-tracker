@@ -42,6 +42,7 @@ describe('MovieService', () => {
       const list = await service.saveMovie(movie);
 
       expect(list.length).toEqual(4);
+      expect(list[3].title).toEqual(movie.title);
     });
   });
 });
