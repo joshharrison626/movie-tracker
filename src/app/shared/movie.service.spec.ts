@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { MovieService } from './movie.service';
+import { Movie } from '../models/movie.model';
 
 describe('MovieService', () => {
   let service: MovieService;
@@ -27,6 +28,20 @@ describe('MovieService', () => {
       expect(list[0].title).toEqual('Jurassic Park');
       expect(list[1].title).toEqual('Stargate');
       expect(list[2].title).toEqual('Napoleon Dynamite');
+    });
+  });
+
+  describe('saveMovie', () => {
+    it('should add a movie to MOVIE_LIST', async () => {
+      const movie: Movie = {
+        title: 'foo',
+        genre: ['bar', 'baz'],
+        rating: 5,
+      };
+
+      const list = await service.saveMovie(movie);
+
+      expect(list.length).toEqual(4);
     });
   });
 });
