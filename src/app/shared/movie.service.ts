@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Movie } from '../models/movie.model';
-import { Observable } from 'rxjs';
 
 export const MOVIE_LIST: Movie[] = [
   {
@@ -28,6 +27,11 @@ export class MovieService {
   constructor() { }
 
   getMovieList(): Promise<Movie[]> {
+    return Promise.resolve(MOVIE_LIST); // simulate async http request
+  }
+
+  saveMovie(movie: Movie): Promise<Movie[]> {
+    MOVIE_LIST.push(movie);
     return Promise.resolve(MOVIE_LIST); // simulate async http request
   }
 }
