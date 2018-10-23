@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { MovieService } from './movie.service';
 import { Movie } from '../models/movie.model';
+import { MOVIE_LIST } from './movie.list';
 
 describe('MovieService', () => {
   let service: MovieService;
@@ -34,7 +35,6 @@ describe('MovieService', () => {
   describe('saveMovie', () => {
     it('should add a movie to MOVIE_LIST', async () => {
       const movie: Movie = {
-        id: '1234',
         title: 'foo',
         genre: ['bar', 'baz'],
         rating: '5',
@@ -44,6 +44,37 @@ describe('MovieService', () => {
 
       expect(list.length).toEqual(4);
       expect(list[3].title).toEqual(movie.title);
+    });
+  });
+
+  describe('editMovie', () => {
+    it('should modify the movie genre', async () => {
+      const movie = MOVIE_LIST[0]; // need to clone this....
+      movie.genre.push('Comedy');
+
+      const list = await service.editMovie(movie);
+
+      expect(list[0].genre).toContain('Comedy');
+    });
+
+    it('should modify the movie rating', async () => {
+      const movie = MOVIE_LIST[0];
+      movie.rating = '3';
+
+      const list = await service.editMovie(movie);
+
+      expect(list[0].rating).toEqual('3');
+    });
+
+    it('should reject the promise if modifying the title', async () => {
+      const movie = MOVIE_LIST[0];
+      movie.title = 'foo';
+
+      try {
+        await service.editMovie(movie);
+      } catch (error) {
+        expect(error).toEqual('Protected property');
+      }
     });
   });
 });
