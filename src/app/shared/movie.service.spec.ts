@@ -18,4 +18,15 @@ describe('MovieService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  describe('getMovieList', () => {
+    it('should return the contents of MOVIE_LIST', () => {
+      const list = service.getMovieList();
+
+      expect(list.length).toEqual(3);
+      expect(list[0].title).toEqual('Jurassic Park');
+      expect(list[1].title).toEqual('Stargate');
+      expect(list[2].title).toEqual('Napoleon Dynamite');
+    });
+  });
 });
