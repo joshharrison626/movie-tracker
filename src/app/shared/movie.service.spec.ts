@@ -34,9 +34,10 @@ describe('MovieService', () => {
   describe('saveMovie', () => {
     it('should add a movie to MOVIE_LIST', async () => {
       const movie: Movie = {
+        id: '1234',
         title: 'foo',
         genre: ['bar', 'baz'],
-        rating: 5,
+        rating: '5',
       };
 
       const list = await service.saveMovie(movie);
