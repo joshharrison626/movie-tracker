@@ -20,8 +20,8 @@ describe('MovieService', () => {
   });
 
   describe('getMovieList', () => {
-    it('should return the contents of MOVIE_LIST', () => {
-      const list = service.getMovieList();
+    it('should return the contents of MOVIE_LIST', async () => {
+      const list = await service.getMovieList();
 
       expect(list.length).toEqual(3);
       expect(list[0].title).toEqual('Jurassic Park');
