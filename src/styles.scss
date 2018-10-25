@@ -1,2 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.sr-only{
+	border:0;
+	clip:rect(0,0,0,0);
+	height:1px;
+	overflow:hidden;
+	margin:-1px;
+	position:absolute;
+	width:1px;
+}
