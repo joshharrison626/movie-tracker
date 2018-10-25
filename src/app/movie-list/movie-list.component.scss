@@ -1,0 +1,93 @@
+mat-table {
+  margin: 2em auto;
+  max-width: 46em;
+  min-width: 30em;
+}
+
+mat-header-cell {
+  font-weight: normal;
+  font-size: 1em;
+  color: rgba(0,0,0,.87);
+  
+  &.mat-column-delete {
+    max-width: 6.5em;
+  }
+}
+
+mat-footer-row, mat-header-row, mat-row {
+  border-bottom-width: 0;
+}
+
+mat-cell.mat-column-delete {
+  max-width: 7em;
+}
+
+.select-sm {
+  display: none;
+}
+
+mat-card {
+  margin: 2em auto;
+  max-width: 44em;
+  min-width: 28em;
+
+  mat-card-content {
+    padding: 1em;
+  }
+
+  mat-form-field {
+    margin-right: 2em;
+  }
+
+  mat-card-actions {
+    margin-left: 0;
+  }
+}
+
+h2 {
+  margin-bottom: 0;
+}
+
+button.mat-icon-button {
+  width: 2em;
+
+  mat-icon[ng-reflect-color="default"] {
+    color: rgba(0, 0, 0, .4);
+  }
+
+  &:focus ::ng-deep mat-icon,
+  mat-icon:hover {
+    color: rgb(255, 166, 0);
+  }
+}
+
+h2 {
+  font-weight: normal;
+  font-size: 1em;
+}
+
+/* https://stackoverflow.com/questions/45439313/angular-2-4-how-to-style-angular-material-design-snackbar */
+::ng-deep snack-bar-container.snack-bar-custom {
+  span, button {
+    color: white;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  mat-cell.mat-column-title {
+    display: block;
+    padding-right: 1em;
+
+    mat-form-field {
+      display: block;
+    }
+  }
+
+  .mat-column-genre {
+    display: none;
+  }
+
+  mat-footer-row, mat-header-row, mat-row {
+    border-bottom-width: 1px;
+  }
+}
