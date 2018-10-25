@@ -1,3 +1,81 @@
-<p>
-  movie-list works!
-</p>
+<mat-table [dataSource]="movieList" class="mat-elevation-z8">
+  <ng-container matColumnDef="delete">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <button mat-raised-button color="default" (click)="deleteMovie(element)">Delete</button>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Title Column -->
+  <ng-container matColumnDef="title">
+    <mat-header-cell *matHeaderCellDef>My favorite movies:</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-form-field>
+        <input aria-label="title" matInput [(ngModel)]="element.title" (change)="editMovie(element)">
+      </mat-form-field>
+      <mat-form-field class="select-sm">
+        <mat-select aria-label="genre" [(ngModel)]="element.genre" (selectionChange)="editMovie(element)">
+          <mat-option *ngFor="let genre of genreList" [value]="genre">{{ genre }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Genre Column -->
+  <ng-container matColumnDef="genre">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-form-field>
+        <mat-select aria-label="genre" [(ngModel)]="element.genre" (selectionChange)="editMovie(element)">
+          <mat-option *ngFor="let genre of genreList" [value]="genre">{{ genre }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Rating Column -->
+  <ng-container matColumnDef="rating">
+    <mat-header-cell *matHeaderCellDef>Rating:</mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <span class="sr-only">current rating {{ element.rating }} stars</span>
+      <button aria-label="set rating to 1 star" mat-icon-button (click)="setRating(element, 1)">
+        <mat-icon [color]="element.rating >= '1' ? 'primary' : 'default'">star</mat-icon>
+      </button>
+      <button aria-label="set rating to 2 stars" mat-icon-button (click)="setRating(element, 2)">
+        <mat-icon [color]="element.rating >= '2' ? 'primary' : 'default'">star</mat-icon>
+      </button>
+      <button aria-label="set rating to 3 stars" mat-icon-button (click)="setRating(element, 3)">
+        <mat-icon [color]="element.rating >= '3' ? 'primary' : 'default'">star</mat-icon>
+      </button>
+      <button aria-label="set rating to 4 stars" mat-icon-button (click)="setRating(element, 4)">
+        <mat-icon [color]="element.rating >= '4' ? 'primary' : 'default'">star</mat-icon>
+      </button>
+      <button aria-label="set rating to 5 stars" mat-icon-button (click)="setRating(element, 5)">
+        <mat-icon [color]="element.rating >= '5' ? 'primary' : 'default'">star</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<mat-card class="mat-elevation-z8">
+  <h2 mat-subheader>New Movie:</h2>
+  <mat-card-content>
+    <form [formGroup]="newMovieFormGroup">
+      <mat-form-field>
+        <input matInput placeholder="enter a title" formControlName="title">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="genre" placeholder="select a genre">
+          <mat-option *ngFor="let genre of genreList" value="{{ genre }}">{{ genre }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-card-actions>
+        <button mat-raised-button color="primary" [disabled]="!newMovieFormGroup.valid" (click)="saveMovie()">Save</button>
+        <button mat-raised-button color="default" (click)="resetForm()">Cancel</button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>
