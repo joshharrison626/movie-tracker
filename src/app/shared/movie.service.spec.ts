@@ -1,11 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import * as _ from 'lodash';
 
 import { MovieService } from './movie.service';
 import { Movie } from '../models/movie.model';
-import { MOVIE_LIST } from './movie.list';
+import { MOVIE_LIST } from '../models/data';
 
 describe('MovieService', () => {
   let service: MovieService;
+  let movieList: Movie[];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,6 +17,7 @@ describe('MovieService', () => {
     });
 
     service = TestBed.get(MovieService);
+    movieList = _.cloneDeep(MOVIE_LIST);
   });
 
   it('should be created', () => {
@@ -22,13 +25,13 @@ describe('MovieService', () => {
   });
 
   describe('getMovieList', () => {
-    it('should return the contents of MOVIE_LIST', async () => {
-      const list = await service.getMovieList();
-
-      expect(list.length).toEqual(3);
-      expect(list[0].title).toEqual('Jurassic Park');
-      expect(list[1].title).toEqual('Stargate');
-      expect(list[2].title).toEqual('Napoleon Dynamite');
+    it('should return the contents of MOVIE_LIST', () => {
+      service.getMovieList().subscribe(list => {
+        expect(list.length).toEqual(3);
+        expect(list[0].title).toEqual('Jurassic Park');
+        expect(list[1].title).toEqual('Stargate');
+        expect(list[2].title).toEqual('Napoleon Dynamite');
+      });
     });
   });
 
@@ -36,45 +39,61 @@ describe('MovieService', () => {
     it('should add a movie to MOVIE_LIST', async () => {
       const movie: Movie = {
         title: 'foo',
-        genre: ['bar', 'baz'],
+        genre: 'bar',
         rating: '5',
       };
 
-      const list = await service.saveMovie(movie);
-
-      expect(list.length).toEqual(4);
-      expect(list[3].title).toEqual(movie.title);
+      service.saveMovie(movie).subscribe(list => {
+        expect(list.length).toEqual(4);
+        expect(list[3].title).toEqual(movie.title);
+      });
     });
   });
 
   describe('editMovie', () => {
     it('should modify the movie genre', async () => {
-      const movie = MOVIE_LIST[0]; // need to clone this....
-      movie.genre.push('Comedy');
+      const movie = movieList[0];
+      movie.genre = 'Comedy';
 
-      const list = await service.editMovie(movie);
-
-      expect(list[0].genre).toContain('Comedy');
+      service.editMovie(movie).subscribe(list => {
+        expect(list[0].genre).toEqual('Comedy');
+      });
     });
 
     it('should modify the movie rating', async () => {
-      const movie = MOVIE_LIST[0];
+      const movie = movieList[0];
       movie.rating = '3';
 
-      const list = await service.editMovie(movie);
-
-      expect(list[0].rating).toEqual('3');
+      service.editMovie(movie).subscribe(list => {
+        expect(list[0].rating).toEqual('3');
+      });
     });
 
-    it('should reject the promise if modifying the title', async () => {
-      const movie = MOVIE_LIST[0];
+    it('should throw an error if modifying the title', async () => {
+      const movie = movieList[0];
       movie.title = 'foo';
 
-      try {
-        await service.editMovie(movie);
-      } catch (error) {
-        expect(error).toEqual('Protected property');
-      }
+      service.editMovie(movie).subscribe(
+        () => { },
+        (error) => {
+          expect(error).toEqual('Protected property');
+        });
+    });
+  });
+
+  describe('deleteMovie', () => {
+    it('should remove a movie from MOVIE_LIST', async () => {
+      const movie: Movie = {
+        title: 'foo',
+        genre: 'bar',
+        rating: '5',
+      };
+      MOVIE_LIST.push(movie);
+
+      service.deleteMovie(movie).subscribe(list => {
+        expect(list.length).toEqual(4);
+        expect(list[3].title).toEqual(movie.title);
+      });
     });
   });
 });

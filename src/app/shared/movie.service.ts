@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Movie } from '../models/movie.model';
-import { MOVIE_LIST } from './movie.list';
+import { MOVIE_LIST } from '../models/data';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,23 +10,42 @@ export class MovieService {
 
   constructor() { }
 
-  getMovieList(): Promise<Movie[]> {
-    return Promise.resolve(MOVIE_LIST); // simulate async http request
+  getMovieList(): Observable<Movie[]> {
+    return new Observable((observer) => {
+      observer.next(MOVIE_LIST);
+      observer.complete();
+    }); // simulate async http request
   }
 
-  saveMovie(movie: Movie): Promise<Movie[]> {
+  saveMovie(movie: Movie): Observable<Movie[]> {
     MOVIE_LIST.push(movie);
-    return Promise.resolve(MOVIE_LIST); // simulate async http request
+    return new Observable((observer) => {
+      observer.next(MOVIE_LIST);
+      observer.complete();
+    }); // simulate async http request
   }
 
-  editMovie(movie: Movie): Promise<any> {
+  editMovie(movie: Movie): Observable<any> {
     const movieIndex = MOVIE_LIST.findIndex(item => item.id === movie.id);
 
-    if (MOVIE_LIST[movieIndex].title !== movie.title) {
-      return Promise.reject('Protected property');
-    } else {
-      MOVIE_LIST[movieIndex] = movie;
-      return Promise.resolve(MOVIE_LIST); // simulate async http
-    }
+    return new Observable((observer) => {
+      if (MOVIE_LIST[movieIndex].title !== movie.title) {
+        observer.error('Protected property');
+      } else {
+        MOVIE_LIST[movieIndex] = movie;
+        observer.next(MOVIE_LIST);
+        observer.complete();
+      }
+    }); // simulate async http request
+  }
+
+  deleteMovie(movie: Movie): Observable<Movie[]> {
+    const movieIndex = MOVIE_LIST.findIndex(item => item.id === movie.id);
+
+    return new Observable((observer) => {
+      MOVIE_LIST.splice(movieIndex, 1);
+      observer.next(MOVIE_LIST);
+      observer.complete();
+    }); // simulate async http request
   }
 }
