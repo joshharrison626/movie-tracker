@@ -1,6 +1,8 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { MovieListComponent } from './movie-list/movie-list.component';
+import { MaterialModule } from './material/material.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -8,6 +10,11 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         MovieListComponent
+      ],
+      imports: [
+        MaterialModule,
+        ReactiveFormsModule,
+        FormsModule,
       ],
     }).compileComponents();
   }));

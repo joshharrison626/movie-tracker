@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MovieListComponent } from './movie-list/movie-list.component';
 
 @NgModule({
@@ -12,8 +13,10 @@ import { MovieListComponent } from './movie-list/movie-list.component';
     MovieListComponent
   ],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     MaterialModule,
+    FormsModule,
     ReactiveFormsModule,
   ],
   providers: [],
