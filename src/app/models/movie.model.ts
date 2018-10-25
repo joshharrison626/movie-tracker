@@ -1,6 +1,6 @@
 export class Movie {
   id?: string;
   title: string;
-  genre: string[];
-  rating: string;
+  genre: string;
+  rating?: string;
 }
